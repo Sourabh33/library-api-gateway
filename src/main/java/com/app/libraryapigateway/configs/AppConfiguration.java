@@ -1,4 +1,4 @@
-package com.app.libraryapigateway;
+package com.app.libraryapigateway.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

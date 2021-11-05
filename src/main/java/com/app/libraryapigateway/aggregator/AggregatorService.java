@@ -1,4 +1,4 @@
-package com.app.libraryapigateway;
+package com.app.libraryapigateway.aggregator;
 
 import com.app.libraryapigateway.dtos.CartDto;
 import com.app.libraryapigateway.dtos.OrderDto;
@@ -6,14 +6,13 @@ import com.app.libraryapigateway.pojos.Book;
 import com.app.libraryapigateway.pojos.OrderEntity;
 import com.app.libraryapigateway.pojos.ProductCart;
 import org.apache.commons.lang.ArrayUtils;
-import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,9 +21,14 @@ import java.util.List;
 public class AggregatorService {
     private static final Logger LOG = LoggerFactory.getLogger(AggregatorService.class);
 
-    private static final String BOOKS_URL = "http://localhost:8060/books";
-    private static final String CARTS_URL = "http://localhost:8064/cart/all";
-    private static final String ORDERS_URL = "http://localhost:8064/order/all";
+    @Value("${books.url}")
+    private String booksUrl;
+
+    @Value("${carts.url}")
+    private String cartsUrl;
+
+    @Value("${orders.url}")
+    private String ordersUrl;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -75,7 +79,7 @@ public class AggregatorService {
 
     private List<OrderEntity> getOrders() {
         List<OrderEntity> carts;
-        OrderEntity[] cartObjects = restTemplate.getForObject(ORDERS_URL, OrderEntity[].class);
+        OrderEntity[] cartObjects = restTemplate.getForObject(ordersUrl, OrderEntity[].class);
         if (ArrayUtils.isEmpty(cartObjects)) {
             carts = new ArrayList<>();
         } else {
@@ -86,7 +90,7 @@ public class AggregatorService {
 
     private List<ProductCart> getCarts() {
         List<ProductCart> carts;
-        ProductCart[] cartObjects = restTemplate.getForObject(CARTS_URL, ProductCart[].class);
+        ProductCart[] cartObjects = restTemplate.getForObject(cartsUrl, ProductCart[].class);
         if (ArrayUtils.isEmpty(cartObjects)) {
             carts = new ArrayList<>();
         } else {
@@ -97,7 +101,7 @@ public class AggregatorService {
 
     private List<Book> getBooks() {
         List<Book> books;
-        Book[] booksObjects = restTemplate.getForObject(BOOKS_URL, Book[].class);
+        Book[] booksObjects = restTemplate.getForObject(booksUrl, Book[].class);
         if (ArrayUtils.isEmpty(booksObjects)) {
             books = new ArrayList<>();
         } else {

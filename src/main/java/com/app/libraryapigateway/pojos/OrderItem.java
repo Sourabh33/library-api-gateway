@@ -1,14 +1,14 @@
 package com.app.libraryapigateway.pojos;
 
-public class OrderEntity {
+public class OrderItem {
     private Long id;
     private Long itemId;
     private String status;
 
-    public OrderEntity() {
+    public OrderItem() {
     }
 
-    public OrderEntity(Long id, Long itemId, String status) {
+    public OrderItem(Long id, Long itemId, String status) {
         this.id = id;
         this.itemId = itemId;
         this.status = status;

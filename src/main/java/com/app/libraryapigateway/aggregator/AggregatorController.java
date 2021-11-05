@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,12 +19,18 @@ public class AggregatorController {
     private AggregatorService service;
 
     @GetMapping("/cart/details")
-    public ResponseEntity<List<CartDto>> getCartDetails() {
+    public ResponseEntity<List<CartDto>> getCartDetails(@RequestParam String userId) {
+        if(userId != null) {
+            ResponseEntity.ok(service.getCartAggregatedDetailsByUserId(userId));
+        }
         return ResponseEntity.ok(service.getCartAggregatedDetails());
     }
 
     @GetMapping("/order/details")
-    public ResponseEntity<List<OrderDto>> getOrderDetails() {
+    public ResponseEntity<List<OrderDto>> getOrderDetails(@RequestParam String userId) {
+        if(userId != null) {
+            ResponseEntity.ok(service.getOrderAggregatedDetailsByUserId(userId));
+        }
         return ResponseEntity.ok(service.getOrderAggregatedDetails());
     }
 }
